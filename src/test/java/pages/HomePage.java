@@ -15,7 +15,7 @@ public class HomePage {
     public RemoteWebDriver driver;
     public TestUtility utility = new TestUtility();
 
-   public String HelloJDoodleCode = "public class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(\"Hello, Doodle!\");\n\t}\n}";
+    public String HelloJDoodleCode = "public class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(\"Hello, Doodle!\");\n\t}\n}";
     public  String SumOfTwoNumberJavaCode = "public class MyClass {\\n\n" +
             "\\tpublic static void main(String args[]) {\\n\n" +
             "\\t\\tint x=10;\\n\n" +
@@ -71,12 +71,14 @@ public class HomePage {
     @FindBy(xpath = "(//div[@class='ace_content'])[2]//div[@class='ace_line'][3]")
     public WebElement outputResultForErrorLine3;
 
-
     @FindBy(xpath = "//div[@class='hidden w-auto justify-end py-3 pr-2 lg:flex lg:w-[162px] xl:w-auto']//input[@id='searchBar']")
     public WebElement searchLanguage;
 
     @FindBy(xpath = "//div[@id='codeSearchDropdown']")
     public WebElement codeSearchDropdown;
+
+    @FindBy(xpath = "(//div[@class='ace_layer ace_text-layer'])[2]/div[text()='JDoodle in Action.... Running the program...']")
+    public WebElement runningProgram;
 
 
     @Step("Opening JDoodle Online Compiler Page")
@@ -95,10 +97,9 @@ public class HomePage {
 
 
     public HomePage clearCurrentProject(){
-//        utility.wait(driver,30);
         Actions actions = new Actions(driver);
         try{
-            Thread.sleep(10000);
+            utility.waitforClickable(driver,newProjectButton);
             newProjectButton.click();
         }
         catch(Exception e) {
@@ -121,30 +122,24 @@ public class HomePage {
 
     public HomePage clickOnExecuteButton(){
         utility.scrollToSpecificWebElement(driver,fAQicon);
-        try{Thread.sleep(10000);}
+        try{Thread.sleep(5000);}
         catch(Exception e) {e.getMessage();}
         executeButton.click();
-        utility.wait(driver,10);
+//        utility.wait(driver,10);
      return this;
     }
 
     public HomePage validateOutputResult(){
-//        utility.wait(driver,15);
-        try{ Thread.sleep(15000); }
-        catch(Exception e) { e.getMessage(); }
+      utility.waitForInvisibility(driver,runningProgram);
        Assert.assertEquals(outputResult.getText(),"Hello, Doodle!");
        return this;
     }
 
     public HomePage changeLanguageOfJavaCode(){
 
-        try{ Thread.sleep(10000); }
-        catch(Exception e) { e.getMessage(); }
-
+        utility.waitforClickable(driver,searchLanguage);
         ((JavascriptExecutor)driver).executeScript("arguments[0].click()", searchLanguage);
-
-        try{ Thread.sleep(5000); }
-        catch(Exception e) { e.getMessage(); }
+        utility.waitforClickable(driver,codeSearchDropdown);
 
         Actions actions = new Actions(driver);
         actions.click(codeSearchDropdown).build().perform();
@@ -153,7 +148,7 @@ public class HomePage {
     }
 
     public HomePage validateOutputResultWithChangeLanguage(){
-        try{ Thread.sleep(10000); }
+        try{ Thread.sleep(8000); }
         catch(Exception e) { e.getMessage(); }
        String newChangeLanguageSyntax =  whiteBoard.getText();
         Assert.assertNotEquals(newChangeLanguageSyntax,SumOfTwoNumberJavaCode);
@@ -162,7 +157,7 @@ public class HomePage {
     }
 
     public HomePage enterInvalidCode(){
-        utility.wait(driver,20);
+        utility.wait(driver,16);
         utility.waitforClickable(driver,whiteBoard);
         whiteBoard.click();
         ( (JavascriptExecutor) driver).executeScript("ace.edit(document.getElementById('code')).session.setValue(arguments[0]);", InvalidHelloJDoodleCode);
@@ -170,8 +165,7 @@ public class HomePage {
     }
 
     public HomePage validateInvalidErrorOutputResult(){
-        try{ Thread.sleep(12000); }
-        catch(Exception e) { e.getMessage(); }
+        utility.waitForInvisibility(driver,runningProgram);
         Assert.assertEquals(outputResultForErrorLine2.getText(),"HelloWorld.java:3: error: ';' expected");
         Assert.assertEquals(outputResultForErrorLine3.getText().trim(),"        System.out.println(\"Hello, Doodle!\")".trim());
         Assert.assertTrue(outputResultForErrorLine2.getText().contains("error"));
@@ -179,8 +173,7 @@ public class HomePage {
     }
 
     public HomePage  validateInputAreaIsEmpty(){
-        try{ Thread.sleep(10000); }
-        catch(Exception e) { e.getMessage(); }
+        utility.wait(driver,10);
         Assert.assertEquals(whiteBoard.getText(),"1");
         return this;
     }

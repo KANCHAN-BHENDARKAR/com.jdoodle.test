@@ -1,6 +1,7 @@
 package utilities;
 
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebElement;
@@ -75,6 +76,17 @@ public class TestUtility {
       wait =  new WebDriverWait(driver,Duration.ofSeconds(15));
      return  wait.until(ExpectedConditions.visibilityOf(element));
    }
+
+    public TestUtility waitForInvisibility(RemoteWebDriver driver, WebElement element){
+        wait =  new WebDriverWait(driver,Duration.ofSeconds(15));
+          wait.until(ExpectedConditions.invisibilityOf(element));
+          return this;
+    }
+
+    public void waitForTextTobeVisible(By locator, String text){
+        wait =  new WebDriverWait(driver,Duration.ofSeconds(15));
+          wait.until(ExpectedConditions.textToBe(locator,text));
+    }
 
     public WebElement waitforClickable(RemoteWebDriver driver, WebElement element){
         wait =  new WebDriverWait(driver,Duration.ofSeconds(15));
