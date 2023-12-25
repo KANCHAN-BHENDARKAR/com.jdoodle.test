@@ -10,8 +10,8 @@ import tests.BaseTest;
 
 public class JDoodleSteps {
 
-    public  RemoteWebDriver driver ;
-    PageObjectManager  pageObjectManager = new PageObjectManager();
+    public RemoteWebDriver driver;
+    PageObjectManager pageObjectManager = new PageObjectManager();
 
     public JDoodleSteps(BaseTest baseTest) {
         this.driver = baseTest.driver;

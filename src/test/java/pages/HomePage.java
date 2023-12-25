@@ -16,7 +16,7 @@ public class HomePage {
     public TestUtility utility = new TestUtility();
 
     public String HelloJDoodleCode = "public class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(\"Hello, Doodle!\");\n\t}\n}";
-    public  String SumOfTwoNumberJavaCode = "public class MyClass {\\n\n" +
+    public String SumOfTwoNumberJavaCode = "public class MyClass {\\n\n" +
             "\\tpublic static void main(String args[]) {\\n\n" +
             "\\t\\tint x=10;\\n\n" +
             "\\t\\tint y=25;\\n\n" +
@@ -30,9 +30,9 @@ public class HomePage {
     /**
      * Constructor
      */
-    public HomePage(RemoteWebDriver driver){
+    public HomePage(RemoteWebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 
     /**
@@ -82,99 +82,103 @@ public class HomePage {
 
 
     @Step("Opening JDoodle Online Compiler Page")
-    public HomePage goToJDoodleOnlineCompilerPage(){
+    public HomePage goToJDoodleOnlineCompilerPage() {
         Log.info("Opening JDoodle Online Compiler");
         utility.launchSite(driver);
         return this;
     }
 
-    public HomePage verifyJDoodleOnlineCompilerPage(){
+    public HomePage verifyJDoodleOnlineCompilerPage() {
         utility.waitVisibility(driver, compilerTitle);
-        String title =  driver.getTitle();
-        Assert.assertEquals(title,"Online Java Compiler - Online Java Editor - Java Code Online");
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Online Java Compiler - Online Java Editor - Java Code Online");
         return this;
     }
 
 
-    public HomePage clearCurrentProject(){
+    public HomePage clearCurrentProject() {
         Actions actions = new Actions(driver);
-        try{
-            utility.waitforClickable(driver,newProjectButton);
+        try {
+            utility.waitforClickable(driver, newProjectButton);
             newProjectButton.click();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             actions.moveToElement(sidePanel).build().perform();
             newProjectButton.click();
         }
-        utility.waitVisibility(driver,clearYes);
-        utility.wait(driver,10);
+        utility.waitVisibility(driver, clearYes);
+        utility.wait(driver, 10);
         clearYes.click();
         return this;
     }
 
-    public HomePage enterValidCode(){
-        utility.wait(driver,20);
-        utility.waitforClickable(driver,whiteBoard);
+    public HomePage enterValidCode() {
+        utility.wait(driver, 20);
+        utility.waitforClickable(driver, whiteBoard);
         whiteBoard.click();
-        ( (JavascriptExecutor) driver).executeScript("ace.edit(document.getElementById('code')).session.setValue(arguments[0]);", HelloJDoodleCode);
+        ((JavascriptExecutor) driver).executeScript("ace.edit(document.getElementById('code')).session.setValue(arguments[0]);", HelloJDoodleCode);
         return this;
     }
 
-    public HomePage clickOnExecuteButton(){
-        utility.scrollToSpecificWebElement(driver,fAQicon);
-        try{Thread.sleep(5000);}
-        catch(Exception e) {e.getMessage();}
+    public HomePage clickOnExecuteButton() {
+        utility.scrollToSpecificWebElement(driver, fAQicon);
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.getMessage();
+        }
         executeButton.click();
-//        utility.wait(driver,10);
-     return this;
+        return this;
     }
 
-    public HomePage validateOutputResult(){
-      utility.waitForInvisibility(driver,runningProgram);
-       Assert.assertEquals(outputResult.getText(),"Hello, Doodle!");
-       return this;
+    public HomePage validateOutputResult() {
+        utility.waitForInvisibility(driver, runningProgram);
+        Assert.assertEquals(outputResult.getText(), "Hello, Doodle!");
+        return this;
     }
 
-    public HomePage changeLanguageOfJavaCode(){
+    public HomePage changeLanguageOfJavaCode() {
 
-        utility.waitforClickable(driver,searchLanguage);
-        ((JavascriptExecutor)driver).executeScript("arguments[0].click()", searchLanguage);
-        utility.waitforClickable(driver,codeSearchDropdown);
+        utility.waitforClickable(driver, searchLanguage);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", searchLanguage);
+        utility.waitforClickable(driver, codeSearchDropdown);
 
         Actions actions = new Actions(driver);
         actions.click(codeSearchDropdown).build().perform();
         actions.sendKeys("c#").build().perform();
-        return  this;
-    }
-
-    public HomePage validateOutputResultWithChangeLanguage(){
-        try{ Thread.sleep(8000); }
-        catch(Exception e) { e.getMessage(); }
-       String newChangeLanguageSyntax =  whiteBoard.getText();
-        Assert.assertNotEquals(newChangeLanguageSyntax,SumOfTwoNumberJavaCode);
-        Assert.assertTrue( whiteBoard.getText().contains("using System;"));
         return this;
     }
 
-    public HomePage enterInvalidCode(){
-        utility.wait(driver,16);
-        utility.waitforClickable(driver,whiteBoard);
+    public HomePage validateOutputResultWithChangeLanguage() {
+        try {
+            Thread.sleep(8000);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        String newChangeLanguageSyntax = whiteBoard.getText();
+        Assert.assertNotEquals(newChangeLanguageSyntax, SumOfTwoNumberJavaCode);
+        Assert.assertTrue(whiteBoard.getText().contains("using System;"));
+        return this;
+    }
+
+    public HomePage enterInvalidCode() {
+        utility.wait(driver, 16);
+        utility.waitforClickable(driver, whiteBoard);
         whiteBoard.click();
-        ( (JavascriptExecutor) driver).executeScript("ace.edit(document.getElementById('code')).session.setValue(arguments[0]);", InvalidHelloJDoodleCode);
+        ((JavascriptExecutor) driver).executeScript("ace.edit(document.getElementById('code')).session.setValue(arguments[0]);", InvalidHelloJDoodleCode);
         return this;
     }
 
-    public HomePage validateInvalidErrorOutputResult(){
-        utility.waitForInvisibility(driver,runningProgram);
-        Assert.assertEquals(outputResultForErrorLine2.getText(),"HelloWorld.java:3: error: ';' expected");
-        Assert.assertEquals(outputResultForErrorLine3.getText().trim(),"        System.out.println(\"Hello, Doodle!\")".trim());
+    public HomePage validateInvalidErrorOutputResult() {
+        utility.waitForInvisibility(driver, runningProgram);
+        Assert.assertEquals(outputResultForErrorLine2.getText(), "HelloWorld.java:3: error: ';' expected");
+        Assert.assertEquals(outputResultForErrorLine3.getText().trim(), "        System.out.println(\"Hello, Doodle!\")".trim());
         Assert.assertTrue(outputResultForErrorLine2.getText().contains("error"));
         return this;
     }
 
-    public HomePage  validateInputAreaIsEmpty(){
-        utility.wait(driver,10);
-        Assert.assertEquals(whiteBoard.getText(),"1");
+    public HomePage validateInputAreaIsEmpty() {
+        utility.wait(driver, 10);
+        Assert.assertEquals(whiteBoard.getText(), "1");
         return this;
     }
 

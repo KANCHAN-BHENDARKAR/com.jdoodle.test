@@ -13,34 +13,25 @@ public class BaseTest {
 
     public RemoteWebDriver driver;
 
-    public  RemoteWebDriver openBrowser()
-    {
+    public RemoteWebDriver openBrowser() {
         String browsername = PropertiesFileUtility.getValueFromConfigPropertiesFile("browsername");
-        if(browsername.equalsIgnoreCase("chrome"))
-        {
+        if (browsername.equalsIgnoreCase("chrome")) {
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
             driver = new ChromeDriver(chromeOptions);
-        }
-        else if(browsername.equalsIgnoreCase("firefox"))
-        {
-            driver=new FirefoxDriver();
-        }
-        else if(browsername.equalsIgnoreCase("edge"))
-        {
-            driver=new EdgeDriver();
-        }
-        else
-        {
+        } else if (browsername.equalsIgnoreCase("firefox")) {
+            driver = new FirefoxDriver();
+        } else if (browsername.equalsIgnoreCase("edge")) {
+            driver = new EdgeDriver();
+        } else {
             //Set IE browser zoom level to 100% manually
             //System.setProperty("webdriver.ie.driver","path of iedriverserver.exe software");
-            driver=new InternetExplorerDriver();
+            driver = new InternetExplorerDriver();
         }
-        return(driver);
+        return (driver);
     }
 
-    public void closeSite()
-    {
+    public void closeSite() {
         driver.quit();
     }
 
