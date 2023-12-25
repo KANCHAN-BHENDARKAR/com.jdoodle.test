@@ -87,32 +87,24 @@ public class TestUtility {
 
     public void scrollToBottom(RemoteWebDriver driver) {
         ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-        Log.info("Filter Form Scroll to Bottom");
+        Log.info("Scroll to Bottom");
     }
 
     public void scrollToTop(RemoteWebDriver driver) {
         driver.executeScript("window.scrollTo(document.body.scrollHeight,0)");
-        Log.info("Filter Form Scroll to Top");
+        Log.info("Scroll to Top");
     }
 
     public void scrollToSpecificWebElement(RemoteWebDriver driver,WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
-        Log.info("Filter Form Scroll to Specific Element");
+        Log.info("Scroll to Specific Element");
     }
 
 
     public TestUtility scrollToSpecificWebElement1(RemoteWebDriver driver, WebElement element) {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
-        Log.info("Filter Form Scroll to Specific Element");
+        Log.info("Scroll to Specific Element");
        return this;
-    }
-
-    public int convertStringBracketValueIntoInteger(String Value){
-        StringBuffer sb = new StringBuffer(Value);
-        sb.replace(0,1," ");
-        sb.replace(3,4," ");
-        int count = Integer.parseInt(sb.toString().trim());
-        return count;
     }
 
 }
